@@ -8,16 +8,10 @@ xau = yf.download("GLD", start="2019-01-01", end="2025-06-18")
 xau.to_csv("gld_gold_proxy.csv")
 
 # Read CSV and reset index to convert Date index to a column
-df = pd.read_csv("gld_gold_proxy.csv").reset_index()
+df = pd.read_csv("gld_gold_proxy.csv", skiprows=2)
 
-# Rename columns correctly
-df = df.rename(columns={"Date": "ds", "Close": "y"})
-
-# Convert date column to datetime
-df["ds"] = pd.to_datetime(df["ds"])
-
-# Select required columns and drop missing values
-df = df[["ds", "y"]].dropna()
+# rename columns
+df.columns = ['ds', 'y', 'High', 'Low', 'Open', 'Volume']
 
 # Create and fit Prophet model
 model = Prophet()
